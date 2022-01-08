@@ -26,6 +26,11 @@ function App() {
         yName="salary" // you can specify which data points are to be plotted
         xName="compratio" // I chose headcount as the bubble size (z-axis)
         zName="headcount" // allows to work with any 3 dimensional data set
+        xPrecision={20} // you can pick number of axes ticks
+        yPrecision={10}
+        initXScale={2} // you can pick axes scaling
+        initYScale={2}
+        scaleButtons={true} // you can chose if you want axis scaling buttons
       />
     </div>
   );

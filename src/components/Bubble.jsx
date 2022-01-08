@@ -1,5 +1,5 @@
 import './Bubble.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 function getLeftOffset({ dataEdges, xScale, xData, xName }) {
   let xmin = dataEdges.minimums[xName];
@@ -38,6 +38,14 @@ function getTopOffset({ dataEdges, yScale, yData, yName }) {
   return 100 - adjustedPercentYOffset;
 }
 
+function randomHSLGenerator() {
+  return `hsl(
+    ${Math.floor(Math.random() * 361)}, 
+    ${Math.floor(Math.random() * 101)}%,
+    ${Math.floor(Math.random() * (80 - 45) + 45)}%
+     )`;
+}
+
 function Bubble({
   title,
   dataEdges,
@@ -52,10 +60,17 @@ function Bubble({
   bubbleOpacity,
 }) {
   const [hoisted, setHoisted] = useState(false);
+  const [bubbleColor, setBubbleColor] = useState(`hsl(250, 90%, 80%)`);
+
   let leftOffset = getLeftOffset({ dataEdges, xScale, xData, xName });
   let topOffset = getTopOffset({ dataEdges, yScale, yData, yName });
   // offsets for bubble determine placement on graph
   // offset is determined by value as percentage of adjusted axis
+
+  useEffect(() => {
+    let bubbleHSL = randomHSLGenerator();
+    setBubbleColor(bubbleHSL);
+  }, []);
 
   const bubbleSizeStyle = {
     opacity: bubbleOpacity,
@@ -64,13 +79,9 @@ function Bubble({
     height: zData,
     position: 'absolute',
     left: `${leftOffset}%`,
-    zIndex: hoisted ? 1 : -zData, // if bubble is in hoist mode, put it at forefront, else
+    zIndex: hoisted ? 9999999991 : -zData, // if bubble is in hoist mode, put it at forefront, else
     top: `${topOffset}%`, // bubble z-index order should be ranked by z data (smallest at front)
-    backgroundColor: `hsl(
-      ${Math.floor(Math.random() * 361)}, 
-      ${Math.floor(Math.random() * 101)}%,
-      ${Math.floor(Math.random() * (80 - 45) + 45)}%
-       )`,
+    backgroundColor: bubbleColor,
   };
   // opacity is determined by state (by button)
   // transform allows for bubbles to be 'centered' onto their left and top offsets
