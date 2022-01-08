@@ -1,0 +1,35 @@
+.Yaxis {
+  position: absolute;
+  left: 50%;
+  height: 100%;
+  width: 2px;
+  background-color: black;
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.Yaxis-label {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  font-weight: bold;
+}
+
+.Yaxis-tick {
+  height: 2px;
+  width: 10px;
+  background-color: black;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.Yaxis-tick-number {
+  position: absolute;
+  left: 10px;
+  color: rgb(47, 214, 136);
+  font-weight: bold;
+}
