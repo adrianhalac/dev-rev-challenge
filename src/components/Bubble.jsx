@@ -1,4 +1,5 @@
 import './Bubble.css';
+import { useState } from 'react';
 
 function getLeftOffset({ dataEdges, xScale, xData, xName }) {
   let xmin = dataEdges.minimums[xName];
@@ -50,9 +51,9 @@ function Bubble({
   xScale,
   bubbleOpacity,
 }) {
+  const [hoisted, setHoisted] = useState(false);
   let leftOffset = getLeftOffset({ dataEdges, xScale, xData, xName });
   let topOffset = getTopOffset({ dataEdges, yScale, yData, yName });
-
   // offsets for bubble determine placement on graph
   // offset is determined by value as percentage of adjusted axis
 
@@ -63,22 +64,39 @@ function Bubble({
     height: zData,
     position: 'absolute',
     left: `${leftOffset}%`,
-    zIndex: -zData,
-    top: `${topOffset}%`,
+    zIndex: hoisted ? 1 : -zData, // if bubble is in hoist mode, put it at forefront, else
+    top: `${topOffset}%`, // bubble z-index order should be ranked by z data (smallest at front)
     backgroundColor: `hsl(
       ${Math.floor(Math.random() * 361)}, 
       ${Math.floor(Math.random() * 101)}%,
       ${Math.floor(Math.random() * (80 - 45) + 45)}%
        )`,
   };
-
   // opacity is determined by state (by button)
   // transform allows for bubbles to be 'centered' onto their left and top offsets
   // width and height determined by z-data, bigger circle = higher z-data number
   // background color is set to be brighter colors only. Else black title text doesn't 'pop' enough
 
+  function hoistBubble() {
+    setHoisted(true);
+    // on hover, make bubble be at forefront
+  }
+
+  // these hoist functions simply make the bubble have the highest z-index of all the bubbles
+  // they get triggered on hover, basically, this is to make the bubbles 'pop' up on hover
+
+  function unHoistBubble() {
+    setHoisted(false);
+    // when leaving hover, make bubble go babck to its normal z-index order
+  }
+
   return (
-    <div style={bubbleSizeStyle} className="Bubble">
+    <div
+      style={bubbleSizeStyle}
+      className="Bubble"
+      onMouseEnter={hoistBubble}
+      onMouseLeave={unHoistBubble}
+    >
       <div className="Bubble-info">
         <div className="infoTitle">{`${title}`}</div>
         <div className="infoLine">{`${xName}: ${xData}`}</div>
