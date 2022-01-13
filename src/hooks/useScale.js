@@ -8,14 +8,15 @@ import { useState } from 'react';
 export default function useScale(initScale = 2) {
   const [scale, setScale] = useState(initScale);
 
-  const incrementScale = () => {
-    setScale((scale) => scale + 0.1);
+  const incrementScale = (adder = 0.1) => {
+    console.log(adder);
+    setScale((scale) => scale + adder);
   };
 
-  const decrementScale = () => {
+  const decrementScale = (adder = 0.1) => {
     if (scale <= 1.1) return;
 
-    setScale((scale) => scale - 0.1);
+    setScale((scale) => scale - adder);
   };
 
   return [scale, incrementScale, decrementScale];

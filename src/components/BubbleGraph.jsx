@@ -4,7 +4,7 @@ import GraphAxes from './GraphAxes';
 import ScaleAdjuster from './ScaleAdjuster';
 import { v4 as uuidv4 } from 'uuid';
 import findDataEdges from '../utils/findDataEdges';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import useScale from '../hooks/useScale';
 
 function BubbleGraph({
@@ -28,6 +28,16 @@ function BubbleGraph({
   const [xScale, incrementXScale, decrementXScale] = useScale(initXScale);
   const [yScale, incrementYScale, decrementYScale] = useScale(initYScale);
 
+  function handleScroll(e) {
+    if (e.deltaY > 0) {
+      incrementXScale(0.01);
+      incrementYScale(0.01);
+    } else {
+      decrementXScale(0.01);
+      decrementYScale(0.01);
+    }
+  }
+
   const toggleSeeThrough = () => {
     // function to invert seeThrough state
     setSeeThrough((mode) => !mode);
@@ -38,7 +48,7 @@ function BubbleGraph({
   let bubbleOpacity = seeThrough ? 0.8 : 1; // two opacity states to toggle through
 
   return (
-    <div className="BubbleGraph">
+    <div className="BubbleGraph" onWheel={handleScroll}>
       <div
         className={
           seeThrough ? 'bubbleOpacityButtonToggled' : 'bubbleOpacityButton'

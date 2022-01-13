@@ -8,10 +8,10 @@ function ScaleAdjuster({ increment, decrement, title }) {
     <div className="ScaleAdjuster">
       <div className="ScaleAdjuster-title">{title}</div>
       <div className="ScaleAdjuster-buttons">
-        <div className="ScaleAdjuster-button" onClick={decrement}>
+        <div className="ScaleAdjuster-button" onClick={() => decrement(0.06)}>
           -
         </div>
-        <div className="ScaleAdjuster-button" onClick={increment}>
+        <div className="ScaleAdjuster-button" onClick={() => increment(0.06)}>
           +
         </div>
       </div>
